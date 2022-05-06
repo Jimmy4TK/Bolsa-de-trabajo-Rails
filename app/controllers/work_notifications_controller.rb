@@ -59,11 +59,11 @@ class WorkNotificationsController < ApplicationController
 	def work_notifications_params
 	params.require(:work_notification).permit(:name)
 	end
-
+	#Definimos parametros permitidos para estado aviso de trabajo
 	def status_work_notifications_params
 		params.require(:status_work_notification).permit(:status)
 	end
-
+	#Definimos parametros permitidos para estado aviso de trabajo(en el create)
 	def status_work_notifications_params_create
 	params.require(:status_work_notification).permit(:candidate_id)
 	end
@@ -86,6 +86,7 @@ class WorkNotificationsController < ApplicationController
 	end
 	end
 
+	#Seteamos candidato
 	def set_candidate
 	@candidate_id=status_work_notifications_params_create[:candidate_id]
 	@candidate=Candidate.find_by(id: @candidate_id)
@@ -95,6 +96,7 @@ class WorkNotificationsController < ApplicationController
 	end
 	end
 
+	#Seteamos estado aviso de trabajo
 	def set_apply
 	@apply=StatusWorkNotification.find_by(id: params[:status_id])
 	if @apply.blank?
@@ -103,7 +105,7 @@ class WorkNotificationsController < ApplicationController
 	end
 	end
 
-	#Validamos que el aviso de trabajo pertenezca a la compañia
+	#Validamos que el token enviado pertenezca a la compañia
 	def check_token
 	if request.headers["Authorization"] != "Bearer #{@company.token}"
 		render status:400, json:{message: "Token isn't valid"}
