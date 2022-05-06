@@ -4,11 +4,11 @@ before_action :set_candidate, only:[:show,:update,:destroy]
 
 	def index
 	@candidates = Candidate.all
-	render status:200, json:{candidates: @candidates}
+	render status:200, json: {candidates: @candidates}
 	end
 	
 	def show
-	render status:200,json: {candidate: @candidate}
+	render status:200, json: {candidate: @candidate}
 	end
 	
 	def create
@@ -23,7 +23,7 @@ before_action :set_candidate, only:[:show,:update,:destroy]
 	
 	def destroy
 	if @candidate.destroy
-		render status:200
+		render status:200, json:{}
 	else
 		render_errors_response(@candidate)
 	end
@@ -40,7 +40,7 @@ before_action :set_candidate, only:[:show,:update,:destroy]
 	def set_candidate
 	@candidate = Candidate.find_by(id: params[:id])
 	if @candidate.blank?
-		render status:404, json:{message: "Candidate #{params[:id]} does no exist"}
+		render status:404, json:{message: "Candidate #{params[:id]} doesn't exist"}
 		false
 	end
 	end

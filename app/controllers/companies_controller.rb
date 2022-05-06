@@ -1,6 +1,7 @@
 class CompaniesController < ApplicationController
 	
 	before_action :set_company, only:[:show, :update, :destroy]
+	before_action :check_token, only:[:update, :destroy]
 	
 	def index
 	@companies=Company.all
@@ -38,7 +39,14 @@ class CompaniesController < ApplicationController
 	def set_company
 	@company = Company.find_by(id: params[:id])
 	if @company.blank?
-		render status:404, json:{message: "Company #{params[:id]} does not exist"}
+		render status:404, json:{message: "Company #{params[:id]} doesn't exist"}
+		false
+	end
+	end
+
+	def check_token
+	if request.headers["Authorization"] != "Bearer #{@company.token}"
+		render status:400, json:{message: "Token isn't valid"}
 		false
 	end
 	end

@@ -4,15 +4,11 @@ Rails.application.routes.draw do
     resources :work_notifications, only:[:create,:update,:destroy]
   end
 
-  resources :status_work_notifications,only:[:index,:show,:destroy]
+  resources :work_notifications,only:[:index,:show]
+  post '/companies/:company_id/work_notifications/:id/apply', to: 'work_notifications#apply'
+  put '/companies/:company_id/work_notifications/:id/apply/:status_id', to: 'work_notifications#applyupdate'
 
-  resources :work_notifications,only:[:index,:show] do
-    resources :status_work_notifications, only:[:update]
-  end
-
-	resources :candidates, except:[:new, :edit] do
-    resources :status_work_notifications, only:[:create]
-  end
+	resources :candidates, except:[:new, :edit]
   
   
   # Defines the root path route ("/")
