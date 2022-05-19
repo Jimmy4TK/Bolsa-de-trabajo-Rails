@@ -9,6 +9,7 @@ class CompaniesController < ApplicationController
 	end
 	
 	def show
+	@company = @company.select("id,name,created_at,updated_at")
 	render status:200, json:{company: @company}
 	end
 	

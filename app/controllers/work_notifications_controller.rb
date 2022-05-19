@@ -34,11 +34,9 @@ class WorkNotificationsController < ApplicationController
 	end
 	
 	def apply
-	@status_work_notification=@work_notification.status_work_notifications.build(status_work_notifications_params_create)
+	@status_work_notification=@work_notification.status_work_notifications.build(params.require(:status_work_notification).permit(:candidate_id))
 	if StatusWorkNotification.find_by(candidate_id: @candidate_id,work_notification_id: params[:id]).blank?
-		if @status_work_notification.save
-			save_model(@status_work_notification)
-		end
+		save_model(@status_work_notification)
 	else
 		render status:400, json:{message: "Status_work_notification with Candidate #{@candidate_id} and Work_notification #{params[:id]} already exists"}
 	end
@@ -62,10 +60,6 @@ class WorkNotificationsController < ApplicationController
 	#Definimos parametros permitidos para estado aviso de trabajo
 	def status_work_notifications_params
 		params.require(:status_work_notification).permit(:status)
-	end
-	#Definimos parametros permitidos para estado aviso de trabajo(en el create)
-	def status_work_notifications_params_create
-	params.require(:status_work_notification).permit(:candidate_id)
 	end
 		
 	#Seteamos aviso de trabajo
